@@ -1,41 +1,42 @@
 import { useState } from 'react';
 import { Section } from './Section';
+import { Statistics } from './Statistics';
 import { Container } from './App.styled';
 
 export const App = () => {
-  const [goodComment, setGoodComment] = useState(0);
-  const [neutralComment, setNeutralComment] = useState(0);
-  const [badComment, setBadComment] = useState(0);
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
-  const handleGoodCommentChange = event => {
-    setGoodComment(prevState => goodComment + 1);
+  const handleGoodClick = event => {
+    setGood(prevState => good + 1);
   };
-  const handleNeutralCommentChange = event => {
-    setNeutralComment(prevState => neutralComment + 1);
+  const handleNeutralClick = event => {
+    setNeutral(prevState => neutral + 1);
   };
-  const handleBadCommentChange = event => {
-    setBadComment(prevState => badComment + 1);
+  const handleBadClick = event => {
+    setBad(prevState => bad + 1);
   };
 
   return (
     <Container>
       <Section title="Please leave feedback">
-        <button type="button" onClick={handleGoodCommentChange}>
+        <button type="button" onClick={handleGoodClick}>
           Good
         </button>
-        <button type="button" onClick={handleNeutralCommentChange}>
+        <button type="button" onClick={handleNeutralClick}>
           Neutral
         </button>
-        <button type="button" onClick={handleBadCommentChange}>
+        <button type="button" onClick={handleBadClick}>
           Bad
         </button>
       </Section>
       <Section title="Statistics">
-        <div>
-          <p>Good: {goodComment}</p>
-          <p>Neutral: {neutralComment}</p>
-          <p>Bad: {badComment}</p>
-        </div>
+        <Statistics
+          good={good}
+          neutral={neutral}
+          bad={bad}
+        />
       </Section>
     </Container>
   );
