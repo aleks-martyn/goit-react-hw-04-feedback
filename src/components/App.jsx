@@ -1,22 +1,14 @@
 import { useState } from 'react';
 import { Section } from './Section';
+import { FeedbackOptions } from './FeedbackOptions';
 import { Statistics } from './Statistics';
+import { Notification } from './Notification';
 import { Container } from './App.styled';
 
 export const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
-
-  const handleGoodClick = event => {
-    setGood(prevState => prevState + 1);
-  };
-  const handleNeutralClick = event => {
-    setNeutral(prevState => prevState + 1);
-  };
-  const handleBadClick = event => {
-    setBad(prevState => prevState + 1);
-  };
 
   const handleLeaveFeedback = label => {
     switch (label) {
@@ -37,24 +29,36 @@ export const App = () => {
     }
   };
 
-  const options = Object.keys({ good, neutral, bad })
-  console.log(options);
+  const countTotalFeedback = () => {
+    return good + neutral + bad;
+  };
+
+  const countPositiveFeedbackPercentage = () => {
+    return Math.round((good * 100) / countTotalFeedback());
+  };
+
+  const buttons = Object.keys({ good, neutral, bad });
 
   return (
     <Container>
       <Section title="Please leave feedback">
-        <button type="button" onClick={handleGoodClick}>
-          Good
-        </button>
-        <button type="button" onClick={handleNeutralClick}>
-          Neutral
-        </button>
-        <button type="button" onClick={handleBadClick}>
-          Bad
-        </button>
+        <FeedbackOptions
+          options={buttons}
+          onLeaveFeedback={handleLeaveFeedback}
+        />
       </Section>
       <Section title="Statistics">
-        <Statistics good={good} neutral={neutral} bad={bad} />
+        {countTotalFeedback() > 0 ? (
+          <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={countTotalFeedback()}
+            positivePercentage={countPositiveFeedbackPercentage()}
+          />
+        ) : (
+          <Notification message="There is no feedback" />
+        )}
       </Section>
     </Container>
   );
